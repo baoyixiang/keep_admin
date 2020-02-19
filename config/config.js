@@ -122,6 +122,42 @@ export default {
           authority: ['admin', 'user'],
           routes: [
             {
+              path: '/habit',
+              name: 'habit',
+              icon: 'check-circle-o',
+              routes: [
+                {
+                  name: 'habit_list',
+                  path: '/habit/habit_list',
+                  component: './habit/habit_list',
+                },
+              ],
+            },
+            {
+              path: '/hope',
+              name: 'hope',
+              icon: 'heart',
+              routes: [
+                {
+                  name: 'hope_list',
+                  path: '/hope/hope_list',
+                  component: './hope/hope_list',
+                },
+              ],
+            },
+            {
+              path: '/users_management',
+              name: 'users_management',
+              icon: 'user',
+              routes: [
+                {
+                  name: 'list',
+                  path: '/users_management/list',
+                  component: './users_management/list',
+                },
+              ],
+            },
+            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
