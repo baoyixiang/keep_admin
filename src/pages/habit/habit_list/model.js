@@ -1,18 +1,19 @@
-import { addRule, queryRule, removeRule, updateRule } from './service';
+import { addRule, removeRule, updateRule, queryHabitList } from './service';
 
 const Model = {
-  namespace: 'listTableList',
+  namespace: 'habitList',
   state: {
     data: {
       list: [],
       pagination: {},
     },
+    habitList: {},
   },
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryRule, payload);
+      const response = yield call(queryHabitList, payload);
       yield put({
-        type: 'save',
+        type: 'list',
         payload: response,
       });
     },
@@ -47,6 +48,21 @@ const Model = {
   reducers: {
     save(state, action) {
       return { ...state, data: action.payload };
+    },
+    list(state, { payload }) {
+      console.log('payload:', payload);
+      const listData = {
+        list: payload.list,
+        pagination: {
+          total: payload.total,
+          pageSize: 10,
+          current: payload.pageNum + 1,
+        },
+      };
+      return {
+        ...state,
+        listData,
+      };
     },
   },
 };

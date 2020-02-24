@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import api from '../../../utils/axios';
 
 export async function queryRule(params) {
   return request('/api/rule', {
@@ -22,4 +23,8 @@ export async function updateRule(params) {
     method: 'POST',
     data: { ...params, method: 'update' },
   });
+}
+
+export async function queryHabitList(params) {
+  return api.post('/api/user/custom/list', params);
 }

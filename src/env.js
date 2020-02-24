@@ -5,8 +5,7 @@
 // 运行npm run build，为production
 
 const development = {
-  // BASE_URL: 'http://120.79.154.128:7111',
-  BASE_URL: 'http://192.168.0.43:7001',
+  BASE_URL: 'http://localhost:8080',
 };
 
 const prod = {

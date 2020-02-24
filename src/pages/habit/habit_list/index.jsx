@@ -36,8 +36,8 @@ const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['关闭', '运行中', '已上线', '异常'];
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ listTableList, loading }) => ({
-  listTableList,
+@connect(({ habitList, loading }) => ({
+  habitList,
   loading: loading.models.rule,
 }))
 class TableList extends Component {
@@ -123,8 +123,15 @@ class TableList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const params = {
+      pageNo: 0,
+      pageSize: 10,
+      title: '1111',
+      userId: 1,
+    };
     dispatch({
-      type: 'listTableList/fetch',
+      type: 'habitList/fetch',
+      payload: params,
     });
   }
 
@@ -148,7 +155,7 @@ class TableList extends Component {
     }
 
     dispatch({
-      type: 'listTableList/fetch',
+      type: 'habitList/fetch',
       payload: params,
     });
   };
@@ -160,7 +167,7 @@ class TableList extends Component {
       formValues: {},
     });
     dispatch({
-      type: 'listTableList/fetch',
+      type: 'habitList/fetch',
       payload: {},
     });
   };
@@ -180,7 +187,7 @@ class TableList extends Component {
     switch (e.key) {
       case 'remove':
         dispatch({
-          type: 'listTableList/remove',
+          type: 'habitList/remove',
           payload: {
             key: selectedRows.map(row => row.key),
           },
@@ -216,7 +223,7 @@ class TableList extends Component {
         formValues: values,
       });
       dispatch({
-        type: 'listTableList/fetch',
+        type: 'habitList/fetch',
         payload: values,
       });
     });
@@ -238,7 +245,7 @@ class TableList extends Component {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'listTableList/add',
+      type: 'habitList/add',
       payload: {
         desc: fields.desc,
       },
@@ -250,7 +257,7 @@ class TableList extends Component {
   handleUpdate = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'listTableList/update',
+      type: 'habitList/update',
       payload: {
         name: fields.name,
         desc: fields.desc,
@@ -459,7 +466,7 @@ class TableList extends Component {
 
   render() {
     const {
-      listTableList: { data },
+      habitList: { data },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
