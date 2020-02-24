@@ -1,4 +1,4 @@
-import { Button, Card, Icon, List, Typography } from 'antd';
+import { Button, Card, List, Modal, Typography } from 'antd';
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
@@ -6,59 +6,38 @@ import styles from './style.less';
 
 const { Paragraph } = Typography;
 
-@connect(({ listCardList, loading }) => ({
-  listCardList,
+@connect(({ hopeList, loading }) => ({
+  hopeList,
   loading: loading.models.list,
 }))
 class CardList extends Component {
+  state = {
+    modalVisible: false,
+  };
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'listCardList/fetch',
+      type: 'hopeList/fetch',
       payload: {
         count: 8,
       },
     });
   }
 
+  handleModalVisible = flag => {
+    this.setState({
+      modalVisible: !!flag,
+    });
+  };
+
   render() {
     const {
-      listCardList: { list },
+      hopeList: { list },
       loading,
     } = this.props;
-    const content = (
-      <div className={styles.pageHeaderContent}>
-        <p>
-          段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，
-          提供跨越设计与开发的体验解决方案。
-        </p>
-        <div className={styles.contentLink}>
-          <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" />{' '}
-            快速开始
-          </a>
-          <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" />{' '}
-            产品简介
-          </a>
-          <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" />{' '}
-            产品文档
-          </a>
-        </div>
-      </div>
-    );
-    const extraContent = (
-      <div className={styles.extraImg}>
-        <img
-          alt="这是一个标题"
-          src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png"
-        />
-      </div>
-    );
-    const nullData = {};
     return (
-      <PageHeaderWrapper content={content} extraContent={extraContent}>
+      <PageHeaderWrapper>
         <div className={styles.cardList}>
           <List
             rowKey="id"
@@ -70,44 +49,50 @@ class CardList extends Component {
               sm: 1,
               xs: 1,
             }}
-            dataSource={[nullData, ...list]}
+            dataSource={[...list]}
             renderItem={item => {
-              if (item && item.id) {
-                return (
-                  <List.Item key={item.id}>
-                    <Card
-                      hoverable
-                      className={styles.card}
-                      actions={[<a key="option1">操作一</a>, <a key="option2">操作二</a>]}
-                    >
-                      <Card.Meta
-                        avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
-                        title={<a>{item.title}</a>}
-                        description={
-                          <Paragraph
-                            className={styles.item}
-                            ellipsis={{
-                              rows: 3,
-                            }}
-                          >
-                            {item.description}
-                          </Paragraph>
-                        }
-                      />
-                    </Card>
-                  </List.Item>
-                );
-              }
-
               return (
-                <List.Item>
-                  <Button type="dashed" className={styles.newButton}>
-                    <Icon type="plus" /> 新增产品
-                  </Button>
+                <List.Item key={item.id}>
+                  <Card
+                    hoverable
+                    className={styles.card}
+                    actions={[
+                      <Button key="option1" type="link" onClick={this.handleModalVisible}>
+                        查看详情
+                      </Button>,
+                      <Button type="link" key="option2">
+                        删除
+                      </Button>,
+                    ]}
+                  >
+                    <Card.Meta
+                      avatar={<img alt="" className={styles.cardAvatar} src={item.images} />}
+                      title={<a>{item.createUserId}</a>}
+                      description={
+                        <Paragraph
+                          className={styles.item}
+                          ellipsis={{
+                            rows: 3,
+                          }}
+                        >
+                          {item.wordContent}
+                        </Paragraph>
+                      }
+                    />
+                  </Card>
                 </List.Item>
               );
             }}
           />
+          <Modal
+            destroyOnClose
+            title="心愿详情"
+            visible={this.state.modalVisible}
+            onOk={() => this.handleModalVisible()}
+            onCancel={() => this.handleModalVisible()}
+          >
+            <div>aaa</div>
+          </Modal>
         </div>
       </PageHeaderWrapper>
     );

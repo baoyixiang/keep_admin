@@ -1,13 +1,13 @@
-import { queryFakeList } from './service';
+import { queryHopeList } from './service';
 
 const Model = {
-  namespace: 'listCardList',
+  namespace: 'hopeList',
   state: {
     list: [],
   },
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
+      const response = yield call(queryHopeList, payload);
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],
@@ -16,6 +16,7 @@ const Model = {
   },
   reducers: {
     queryList(state, action) {
+      console.log('payload:', action.payload);
       return { ...state, list: action.payload };
     },
   },

@@ -56,7 +56,7 @@ const Model = {
         pagination: {
           total: payload.total,
           pageSize: 10,
-          current: payload.pageNum + 1,
+          current: payload.pageNo + 1,
         },
       };
       return {
