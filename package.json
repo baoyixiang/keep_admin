@@ -115,6 +115,7 @@
     "node-fetch": "^2.6.0",
     "prettier": "^1.17.1",
     "pro-download": "1.0.1",
+    "react-infinite-scroller": "^1.2.4",
     "slash2": "^2.0.0",
     "stylelint": "^10.1.0",
     "umi-plugin-ga": "^1.1.3",

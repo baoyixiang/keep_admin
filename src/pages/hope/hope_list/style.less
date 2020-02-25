@@ -3,7 +3,19 @@
 
 .cardList {
   margin-bottom: -24px;
-
+  .infinite {
+    height: 450px;
+    padding: 8px 24px;
+    overflow: auto;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+  }
+  .loading {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+  }
   .card {
     :global {
       .ant-card-meta-title {

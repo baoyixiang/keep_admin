@@ -28,3 +28,6 @@ export async function updateRule(params) {
 export async function queryRule1(params) {
   return api.post('/api/admin/user/list', params);
 }
+export async function queryUsersList(params) {
+  return api.post('/backApi/hope/listUsers', params);
+}

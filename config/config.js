@@ -122,6 +122,11 @@ export default {
           authority: ['admin', 'user'],
           routes: [
             {
+              path: '/',
+              redirect: '/habit/habit_list',
+              authority: ['admin', 'user'],
+            },
+            {
               path: '/habit',
               name: 'habit',
               icon: 'check-circle-o',
@@ -343,11 +348,6 @@ export default {
                   component: './editor/koni',
                 },
               ],
-            },
-            {
-              path: '/',
-              redirect: '/dashboard/analysis',
-              authority: ['admin', 'user'],
             },
             {
               component: '404',

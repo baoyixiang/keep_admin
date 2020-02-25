@@ -1,4 +1,4 @@
-import { queryHopeList } from './service';
+import { queryHopeList, deleteHope } from './service';
 
 const Model = {
   namespace: 'hopeList',
@@ -13,11 +13,22 @@ const Model = {
         payload: Array.isArray(response) ? response : [],
       });
     },
+    *delete({ payload, callback }, { call, put }) {
+      const response = yield call(deleteHope, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+      if (callback) callback();
+    },
   },
   reducers: {
     queryList(state, action) {
       console.log('payload:', action.payload);
       return { ...state, list: action.payload };
+    },
+    save(state, action) {
+      return { ...state, data: action.payload };
     },
   },
 };
