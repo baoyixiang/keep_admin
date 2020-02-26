@@ -1,9 +1,9 @@
-import { addHabit, removeRule, updateRule, queryHabitList } from './service';
-import { message } from 'antd';
+import { addRule, queryUsersList, recommendUser, updateRule } from './service';
 import { isResponseSuccess } from '@/utils/axios';
+import { message } from 'antd';
 
 const Model = {
-  namespace: 'habitList',
+  namespace: 'usersList',
   state: {
     data: {
       list: [],
@@ -12,7 +12,7 @@ const Model = {
   },
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryHabitList, payload);
+      const response = yield call(queryUsersList, payload);
       yield put({
         type: 'list',
         payload: response,
@@ -20,25 +20,25 @@ const Model = {
     },
 
     *add({ payload, callback }, { call, put }) {
-      const response = yield call(addHabit, payload);
-      if (isResponseSuccess(response)) {
-        message.success('添加成功');
-        yield put({
-          type: 'save',
-          payload: response,
-        });
-      } else {
-        message.error(`添加失败:${response.data.message}`);
-      }
-    },
-
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
+      const response = yield call(addRule, payload);
       yield put({
         type: 'save',
         payload: response,
       });
       if (callback) callback();
+    },
+
+    *recommend({ payload, callback }, { call, put }) {
+      const response = yield call(recommendUser, payload);
+      if (isResponseSuccess(response)) {
+        message.success('设置成功');
+        yield put({
+          type: 'save',
+          payload: response,
+        });
+      } else {
+        message.error(`设置失败:${response.data.message}`);
+      }
     },
 
     *update({ payload, callback }, { call, put }) {
@@ -55,7 +55,6 @@ const Model = {
       return { ...state, data: action.payload };
     },
     list(state, { payload }) {
-      console.log('payload:', payload);
       const listData = {
         list: payload.list,
         pagination: {

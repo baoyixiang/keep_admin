@@ -7,6 +7,7 @@ export default {
   'menu.register.result': '注册结果',
   'menu.habit': '习惯管理',
   'menu.habit.habit_list': '习惯列表',
+  'menu.habit.record_list': '打卡列表',
   'menu.hope': '心愿管理',
   'menu.hope.hope_list': '心愿列表',
   'menu.users_management': '用户管理',

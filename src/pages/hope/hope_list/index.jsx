@@ -62,7 +62,7 @@ class CardList extends Component {
         type: 'hopeList/fetch',
         payload: {
           pageNo: 0,
-          pageSize: 10,
+          pageSize: this.state.pageSize,
         },
       });
     });

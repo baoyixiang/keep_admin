@@ -3,10 +3,10 @@ import React, { Component, Fragment } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import moment from 'moment';
-import CreateForm from './components/CreateForm';
 import StandardTable from './components/StandardTable';
 import styles from './style.less';
-import * as routerRedux from 'react-router-redux';
+import { FormattedMessage } from 'umi-plugin-react/locale';
+import { Pie } from '@/pages/dashboard/monitor/components/Charts';
 
 const FormItem = Form.Item;
 
@@ -15,14 +15,12 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 
-const status = ['无分类', '学习', '运动'];
-
 /* eslint react/no-multi-comp:0 */
-@connect(({ habitList, loading }) => ({
-  habitList,
+@connect(({ recordList, loading }) => ({
+  recordList,
   loading: loading.models.rule,
 }))
-class HabitList extends Component {
+class RecordList extends Component {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -38,40 +36,27 @@ class HabitList extends Component {
       dataIndex: 'id',
     },
     {
-      title: '习惯名称',
+      title: '用户名',
       dataIndex: 'title',
     },
     {
-      title: '习惯图片',
-      dataIndex: 'logo',
-      width: '100px',
-      align: 'center',
-      render: val => <img src={val ? val.split('|')[0] : null} width="80px" alt={'无'} />,
-    },
-    {
-      title: '加入习惯人数',
+      title: '评论数',
       dataIndex: 'createUserId',
       align: 'center',
-      render: val => `${val} 万`,
-      // mark to display a total number
-      needTotal: true,
     },
     {
-      title: '今日打卡人数',
+      title: '点赞数',
       dataIndex: 'createUserId',
-      align: 'center',
-      render: val => `${val} 万`,
-      needTotal: true,
     },
     {
-      title: '分类',
+      title: '打卡内容',
       dataIndex: 'tags',
       render(val) {
-        return <div>{status[val.length]}</div>;
+        return <div>aaa</div>;
       },
     },
     {
-      title: '创建时间',
+      title: '打卡时间',
       dataIndex: 'createTime',
       align: 'center',
       // sorter: true,
@@ -84,7 +69,7 @@ class HabitList extends Component {
         <Fragment>
           <a onClick={() => this.handleDeleteModalVisible(record)}>删除</a>
           <Divider type="vertical" />
-          <a onClick={() => this.handleDetail(record)}>查看打卡记录</a>
+          <a onClick={() => this.handleDetail(record)}>查看详情</a>
         </Fragment>
       ),
     },
@@ -97,7 +82,7 @@ class HabitList extends Component {
       pageSize: 10,
     };
     dispatch({
-      type: 'habitList/fetch',
+      type: 'recordList/fetch',
       payload: params,
     });
   }
@@ -124,7 +109,7 @@ class HabitList extends Component {
     }
 
     dispatch({
-      type: 'habitList/fetch',
+      type: 'recordList/fetch',
       payload: params,
     });
   };
@@ -137,25 +122,8 @@ class HabitList extends Component {
     };
     form.resetFields();
     dispatch({
-      type: 'habitList/fetch',
+      type: 'recordList/fetch',
       payload: params,
-    });
-  };
-
-  handleSearch = e => {
-    e.preventDefault();
-    const { dispatch, form } = this.props;
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      const params = {
-        title: fieldsValue.title,
-        pageNo: this.state.currentPage,
-        pageSize: 10,
-      };
-      dispatch({
-        type: 'habitList/fetch',
-        payload: params,
-      });
     });
   };
 
@@ -173,14 +141,14 @@ class HabitList extends Component {
       pageSize: 10,
     };
     dispatch({
-      type: 'habitList/add',
+      type: 'recordList/add',
       payload: {
         title: fields.title,
         userId: 0,
       },
     }).then(() => {
       dispatch({
-        type: 'habitList/fetch',
+        type: 'recordList/fetch',
         payload: params,
       });
     });
@@ -215,75 +183,21 @@ class HabitList extends Component {
     // });
   };
 
-  handleDetail = record => {
-    this.props.dispatch(
-      routerRedux.push({
-        // pathname: `/habit/record_list/${record.id}`,
-        pathname: `/habit/record_list`,
-      }),
-    );
-  };
-
-  renderSimpleForm() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
+  renderPie() {
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row
-          gutter={{
-            md: 8,
-            lg: 24,
-            xl: 48,
-          }}
-        >
-          <Col md={8} sm={24}>
-            <FormItem label="习惯名称">
-              {getFieldDecorator('title')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          {/*<Col md={8} sm={24}>*/}
-          {/*  <FormItem label="使用状态">*/}
-          {/*    {getFieldDecorator('status')(*/}
-          {/*      <Select*/}
-          {/*        placeholder="请选择"*/}
-          {/*        style={{*/}
-          {/*          width: '100%',*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        <Option value="0">关闭</Option>*/}
-          {/*        <Option value="1">运行中</Option>*/}
-          {/*      </Select>,*/}
-          {/*    )}*/}
-          {/*  </FormItem>*/}
-          {/*</Col>*/}
-          <Col md={8} sm={24}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button
-                style={{
-                  marginLeft: 8,
-                }}
-                onClick={this.handleFormReset}
-              >
-                重置
-              </Button>
-            </span>
-          </Col>
-          <Col md={8} sm={24}>
-            <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-              新建
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+      <Card
+        title={<FormattedMessage id="今日已打卡比例" defaultMessage="今日已打卡比例" />}
+        bordered={false}
+        className={styles.pieCard}
+      >
+        <Pie animate={false} percent={28} title="AAA" total="28%" height={200} lineWidth={3} />
+      </Card>
     );
   }
 
   render() {
     const {
-      habitList: { listData },
+      recordList: { listData },
       loading,
     } = this.props;
     console.log('list:', listData);
@@ -295,8 +209,8 @@ class HabitList extends Component {
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <div className={styles.HabitList}>
-            <div className={styles.HabitListForm}>{this.renderSimpleForm()}</div>
+          <div className={styles.recordList}>
+            <div className={styles.recordListForm}>{this.renderPie()}</div>
             <StandardTable
               loading={loading}
               data={listData}
@@ -305,10 +219,9 @@ class HabitList extends Component {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderWrapper>
     );
   }
 }
 
-export default Form.create()(HabitList);
+export default Form.create()(RecordList);

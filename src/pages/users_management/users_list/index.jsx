@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Form, Input, Row, Select, message } from 'antd';
+import { Badge, Button, Card, Col, Form, Input, Row, Select, message, Modal } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
@@ -16,15 +16,12 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 
-const statusMap = ['default', 'processing', 'error'];
-const status = ['未激活', '激活', '冻结'];
-
 /* eslint react/no-multi-comp:0 */
-@connect(({ userTableList, loading }) => ({
-  userTableList,
+@connect(({ usersList, loading }) => ({
+  usersList,
   loading: loading.models.rule,
 }))
-class TableList extends Component {
+class UsersList extends Component {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -35,64 +32,40 @@ class TableList extends Component {
 
   columns = [
     {
-      title: '用户名称',
+      title: '用户名',
       dataIndex: 'name',
     },
     {
       title: '个性签名',
-      dataIndex: 'desc',
+      dataIndex: 'personalSignature',
     },
     {
-      title: '加入习惯',
-      dataIndex: 'callNo',
-      sorter: true,
-      align: 'right',
+      title: '加入习惯数',
+      dataIndex: 'id',
       render: val => `${val} 个`,
       // mark to display a total number
       needTotal: true,
     },
     {
       title: '拥有心愿',
-      dataIndex: 'callNo',
-      sorter: true,
-      align: 'right',
+      dataIndex: 'id',
+      align: 'center',
       render: val => `${val} 个`,
       // mark to display a total number
       needTotal: true,
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      filters: [
-        {
-          text: status[0],
-          value: '0',
-        },
-        {
-          text: status[1],
-          value: '1',
-        },
-        {
-          text: status[2],
-          value: '2',
-        },
-      ],
-
-      render(val) {
-        return <Badge status={statusMap[val]} text={status[val]} />;
-      },
-    },
-    {
-      title: '注册时间',
-      dataIndex: 'updatedAt',
-      sorter: true,
+      title: '上次登陆时间',
+      dataIndex: 'lastLoginTime',
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
       title: '操作',
-      render: (text, record) => (
+      render: record => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>详情</a>
+          <a onClick={() => this.handleRecommendModal(record)}>
+            {record.recommended ? '取消推荐' : '设置为推荐用户'}
+          </a>
         </Fragment>
       ),
     },
@@ -105,10 +78,38 @@ class TableList extends Component {
       size: 10,
     };
     dispatch({
-      type: 'userTableList/fetch',
-      payload: params,
+      type: 'usersList/fetch',
+      // payload: params,
     });
   }
+
+  handleRecommendModal = record => {
+    Modal.confirm({
+      title: '操作',
+      content: record.recommended ? '确认取消推荐吗' : '确认将该用户设置为推荐用户吗',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => this.handleRecommend(record),
+    });
+  };
+
+  handleRecommend = record => {
+    const { dispatch } = this.props;
+    const userId = record.id;
+    console.log('id:', userId);
+    dispatch({
+      type: 'usersList/recommend',
+      payload: { userId: 0 },
+    }).then(() => {
+      dispatch({
+        type: 'usersList/fetch',
+        payload: {
+          pageNo: 0,
+          pageSize: this.state.pageSize,
+        },
+      });
+    });
+  };
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
@@ -147,31 +148,6 @@ class TableList extends Component {
     });
   };
 
-  handleMenuClick = e => {
-    const { dispatch } = this.props;
-    const { selectedRows } = this.state;
-    if (!selectedRows) return;
-
-    switch (e.key) {
-      case 'remove':
-        dispatch({
-          type: 'userTableList/remove',
-          payload: {
-            key: selectedRows.map(row => row.key),
-          },
-          callback: () => {
-            this.setState({
-              selectedRows: [],
-            });
-          },
-        });
-        break;
-
-      default:
-        break;
-    }
-  };
-
   handleSelectRows = rows => {
     this.setState({
       selectedRows: rows,
@@ -203,13 +179,6 @@ class TableList extends Component {
     });
   };
 
-  handleUpdateModalVisible = (flag, record) => {
-    this.setState({
-      updateModalVisible: !!flag,
-      stepFormValues: record || {},
-    });
-  };
-
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
@@ -220,20 +189,6 @@ class TableList extends Component {
     });
     message.success('添加成功');
     this.handleModalVisible();
-  };
-
-  handleUpdate = fields => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'userTableList/update',
-      payload: {
-        name: fields.name,
-        desc: fields.desc,
-        key: fields.key,
-      },
-    });
-    message.success('配置成功');
-    this.handleUpdateModalVisible();
   };
 
   renderSimpleForm() {
@@ -292,17 +247,13 @@ class TableList extends Component {
 
   render() {
     const {
-      userTableList: { data },
+      usersList: { listData },
       loading,
     } = this.props;
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
+    const { selectedRows, modalVisible } = this.state;
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
-    };
-    const updateMethods = {
-      handleUpdateModalVisible: this.handleUpdateModalVisible,
-      handleUpdate: this.handleUpdate,
     };
     return (
       <PageHeaderWrapper>
@@ -312,7 +263,7 @@ class TableList extends Component {
             <StandardTable
               selectedRows={selectedRows}
               loading={loading}
-              data={data}
+              data={listData}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
@@ -320,16 +271,9 @@ class TableList extends Component {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />
-        {stepFormValues && Object.keys(stepFormValues).length ? (
-          <UpdateForm
-            {...updateMethods}
-            updateModalVisible={updateModalVisible}
-            values={stepFormValues}
-          />
-        ) : null}
       </PageHeaderWrapper>
     );
   }
 }
 
-export default Form.create()(TableList);
+export default Form.create()(UsersList);

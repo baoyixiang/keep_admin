@@ -136,6 +136,12 @@ export default {
                   path: '/habit/habit_list',
                   component: './habit/habit_list',
                 },
+                {
+                  name: 'record_list',
+                  path: '/habit/record_list',
+                  component: './habit/record_list',
+                  hideInMenu: true,
+                },
               ],
             },
             {
@@ -157,8 +163,8 @@ export default {
               routes: [
                 {
                   name: 'list',
-                  path: '/users_management/list',
-                  component: './users_management/list',
+                  path: '/users_management/users_list',
+                  component: './users_management/users_list',
                 },
               ],
             },

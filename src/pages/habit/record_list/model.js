@@ -3,12 +3,13 @@ import { message } from 'antd';
 import { isResponseSuccess } from '@/utils/axios';
 
 const Model = {
-  namespace: 'habitList',
+  namespace: 'recordList',
   state: {
     data: {
       list: [],
       pagination: {},
     },
+    habitList: {},
   },
   effects: {
     *fetch({ payload }, { call, put }) {
