@@ -176,8 +176,7 @@ class HabitList extends Component {
       type: 'habitList/add',
       payload: {
         title: fields.title,
-        logo:
-          'https://lh3.googleusercontent.com/proxy/jB_XAa-oLrBGP-6Kw5BysG_KONxQyJRWYarxlcAoNR3EFmrC4qBMJD5A0IOF9v6EtjXvZUAtNEUtksA4ySthKGxoVwuQMvLHpSK4apOmtlOX5O0OoTlk',
+        logo: 'http://m.imeitou.com/uploads/allimg/2019111010/siaz3nfqyqs.jpeg',
         tags: [fields.tags],
         userId: 0,
       },
