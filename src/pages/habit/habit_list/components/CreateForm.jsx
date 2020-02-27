@@ -1,5 +1,7 @@
 import { Form, Icon, Input, Modal, Select, Upload, message } from 'antd';
 import React, { Component } from 'react';
+import { picUploadUrl } from '@/utils/axios';
+import { log } from 'lodash-decorators/utils';
 // import {picUploadUrl} from "@/utils/axios";
 // import {getToken} from "@/utils/authority";
 
@@ -14,11 +16,11 @@ function getBase64(img, callback) {
 function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只能上传图片!');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('图片必须小于2M!');
   }
   return isJpgOrPng && isLt2M;
 }
@@ -28,6 +30,7 @@ class CreateForm extends Component {
     super(props);
     this.state = {
       loading: false,
+      fileList: [],
     };
   }
 
@@ -46,6 +49,10 @@ class CreateForm extends Component {
       this.setState({ loading: true });
       return;
     }
+    // this.setState({
+    //   fileList: info
+    // });
+    console.log('tupian:', info);
     if (info.file.status === 'done') {
       // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl =>
@@ -54,6 +61,7 @@ class CreateForm extends Component {
           loading: false,
         }),
       );
+      console.log('url:', this.state.imageUrl);
     }
     if (info.file.status === 'error') {
       message.error('图片上传失败：' + info.file.response.message);
@@ -69,7 +77,7 @@ class CreateForm extends Component {
         span: 15,
       },
     };
-    const { imageUrl } = this.state;
+    const { imageUrl, fileList } = this.state;
     const { modalVisible, form, handleModalVisible } = this.props;
     const uploadButton = (
       <div>
@@ -110,6 +118,7 @@ class CreateForm extends Component {
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture-card"
               showUploadList={false}
+              // fileList={fileList}
               beforeUpload={beforeUpload}
               onChange={this.handleChange}
               // headers={{
@@ -123,7 +132,7 @@ class CreateForm extends Component {
               )}
             </Upload>,
           )}
-          请上传720*480、小于1M的图片
+          请上传1:1、小于2M的图片
         </FormItem>
         <FormItem {...formItemLayout} label="习惯分类">
           {form.getFieldDecorator('tags')(
@@ -131,6 +140,7 @@ class CreateForm extends Component {
               <Option value={0}>无分类</Option>
               <Option value={1}>学习</Option>
               <Option value={2}>运动</Option>
+              <Option value={3}>音乐</Option>
             </Select>,
           )}
         </FormItem>

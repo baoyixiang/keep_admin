@@ -1,4 +1,4 @@
-import { addHabit, removeRule, updateRule, queryHabitList } from './service';
+import { addHabit, deleteHabit, queryHabitList } from './service';
 import { message } from 'antd';
 import { isResponseSuccess } from '@/utils/axios';
 
@@ -32,22 +32,17 @@ const Model = {
       }
     },
 
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
-    },
-
-    *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateRule, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+    *delete({ payload }, { call, put }) {
+      const response = yield call(deleteHabit, payload);
+      if (isResponseSuccess(response)) {
+        message.success('删除成功');
+        yield put({
+          type: 'save',
+          payload: response,
+        });
+      } else {
+        message.error(`删除失败:${response.data.message}`);
+      }
     },
   },
   reducers: {

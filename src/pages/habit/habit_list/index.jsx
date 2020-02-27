@@ -67,7 +67,7 @@ class HabitList extends Component {
       title: '分类',
       dataIndex: 'tags',
       render(val) {
-        return <div>{status[val.length]}</div>;
+        return <div>{status[val[0]]}</div>;
       },
     },
     {
@@ -176,6 +176,9 @@ class HabitList extends Component {
       type: 'habitList/add',
       payload: {
         title: fields.title,
+        logo:
+          'https://lh3.googleusercontent.com/proxy/jB_XAa-oLrBGP-6Kw5BysG_KONxQyJRWYarxlcAoNR3EFmrC4qBMJD5A0IOF9v6EtjXvZUAtNEUtksA4ySthKGxoVwuQMvLHpSK4apOmtlOX5O0OoTlk',
+        tags: [fields.tags],
         userId: 0,
       },
     }).then(() => {
@@ -199,20 +202,21 @@ class HabitList extends Component {
 
   handleDelete = record => {
     const { dispatch } = this.props;
-    const habitId = record.id;
-    console.log('id:', habitId);
-    // dispatch({
-    //   type: 'hopeList/delete',
-    //   payload: { hopeId },
-    // }).then(() => {
-    //   dispatch({
-    //     type: 'hopeList/fetch',
-    //     payload: {
-    //       pageNo: 0,
-    //       pageSize: this.state.pageSize,
-    //     },
-    //   });
-    // });
+    const customId = record.id;
+    console.log('id:', customId);
+    const params = {
+      pageNo: this.state.currentPage,
+      pageSize: 10,
+    };
+    dispatch({
+      type: 'habitList/delete',
+      payload: customId,
+    }).then(() => {
+      dispatch({
+        type: 'habitList/fetch',
+        payload: params,
+      });
+    });
   };
 
   handleDetail = record => {
@@ -295,8 +299,8 @@ class HabitList extends Component {
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
-          <div className={styles.HabitList}>
-            <div className={styles.HabitListForm}>{this.renderSimpleForm()}</div>
+          <div className={styles.habitList}>
+            <div className={styles.habitListForm}>{this.renderSimpleForm()}</div>
             <StandardTable
               loading={loading}
               data={listData}

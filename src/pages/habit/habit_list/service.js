@@ -1,34 +1,14 @@
-import request from '@/utils/request';
 import api from '../../../utils/axios';
 
-export async function queryRule(params) {
-  return request('/api/rule', {
-    params,
-  });
-}
-export async function removeRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: { ...params, method: 'delete' },
-  });
-}
-export async function addRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: { ...params, method: 'post' },
-  });
-}
-export async function updateRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: { ...params, method: 'update' },
-  });
-}
-
 export async function queryHabitList(params) {
-  return api.post('/api/user/custom/list', params);
+  return api.post('/backApi/custom/list', params);
 }
 
 export async function addHabit(params) {
-  return api.post('/api/user/custom/insert_custom', params);
+  return api.post('/backApi/custom/add', params);
+}
+
+export async function deleteHabit(params) {
+  console.log('params', params);
+  return api.delete(`/backApi/custom/delete/${params}`);
 }

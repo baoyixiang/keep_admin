@@ -15,7 +15,7 @@ export async function updateRule(params) {
 }
 
 export async function queryUsersList(params) {
-  return api.get('/backApi/hope/listUsers', params);
+  return api.post('/backApi/user/listUsers', params);
 }
 
 export async function recommendUser(params) {

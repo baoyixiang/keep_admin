@@ -5,7 +5,6 @@ import { connect } from 'dva';
 import moment from 'moment';
 import CreateForm from './components/CreateForm';
 import StandardTable from './components/StandardTable';
-import UpdateForm from './components/UpdateForm';
 import styles from './style.less';
 
 const FormItem = Form.Item;
@@ -33,38 +32,49 @@ class UsersList extends Component {
   columns = [
     {
       title: '用户名',
-      dataIndex: 'name',
+      align: 'center',
+      render: val => `${val.user.name}`,
     },
     {
       title: '个性签名',
-      dataIndex: 'personalSignature',
+      align: 'center',
+      render: val => `${val.user.personalSignature}`,
+      maxLength: 10,
     },
     {
       title: '加入习惯数',
-      dataIndex: 'id',
-      render: val => `${val} 个`,
-      // mark to display a total number
-      needTotal: true,
+      dataIndex: 'customesCount',
+      align: 'center',
+      render: val => `${val === null ? 0 : val} 个`,
     },
     {
       title: '拥有心愿',
-      dataIndex: 'id',
+      dataIndex: 'hopesCount',
       align: 'center',
-      render: val => `${val} 个`,
-      // mark to display a total number
-      needTotal: true,
+      render: val => `${val === null ? 0 : val} 个`,
+    },
+    {
+      title: '关注用户数',
+      dataIndex: 'followingCount',
+      align: 'center',
+    },
+    {
+      title: '被关注数',
+      dataIndex: 'followedCount',
+      align: 'center',
     },
     {
       title: '上次登陆时间',
-      dataIndex: 'lastLoginTime',
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      // dataIndex: 'lastLoginTime',
+      align: 'center',
+      render: val => <span>{moment(val.user.lastLoginTime).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
       title: '操作',
       render: record => (
         <Fragment>
           <a onClick={() => this.handleRecommendModal(record)}>
-            {record.recommended ? '取消推荐' : '设置为推荐用户'}
+            {record.user.recommended ? '取消推荐' : '设置为推荐用户'}
           </a>
         </Fragment>
       ),
@@ -75,18 +85,18 @@ class UsersList extends Component {
     const { dispatch } = this.props;
     const params = {
       pageNo: 0,
-      size: 10,
+      pageSize: 10,
     };
     dispatch({
       type: 'usersList/fetch',
-      // payload: params,
+      payload: params,
     });
   }
 
   handleRecommendModal = record => {
     Modal.confirm({
       title: '操作',
-      content: record.recommended ? '确认取消推荐吗' : '确认将该用户设置为推荐用户吗',
+      content: record.user.recommended ? '确认取消推荐吗' : '确认将该用户设置为推荐用户吗',
       okText: '确认',
       cancelText: '取消',
       onOk: () => this.handleRecommend(record),
@@ -95,18 +105,20 @@ class UsersList extends Component {
 
   handleRecommend = record => {
     const { dispatch } = this.props;
-    const userId = record.id;
+    const userId = record.user.id;
     console.log('id:', userId);
+
+    const params = {
+      pageNo: 0,
+      pageSize: 10,
+    };
     dispatch({
       type: 'usersList/recommend',
-      payload: { userId: 0 },
+      payload: { userId },
     }).then(() => {
       dispatch({
         type: 'usersList/fetch',
-        payload: {
-          pageNo: 0,
-          pageSize: this.state.pageSize,
-        },
+        payload: params,
       });
     });
   };
@@ -145,12 +157,6 @@ class UsersList extends Component {
     dispatch({
       type: 'userTableList/fetch',
       payload: {},
-    });
-  };
-
-  handleSelectRows = rows => {
-    this.setState({
-      selectedRows: rows,
     });
   };
 
@@ -250,7 +256,7 @@ class UsersList extends Component {
       usersList: { listData },
       loading,
     } = this.props;
-    const { selectedRows, modalVisible } = this.state;
+    const { modalVisible } = this.state;
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
@@ -261,11 +267,9 @@ class UsersList extends Component {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             <StandardTable
-              selectedRows={selectedRows}
               loading={loading}
               data={listData}
               columns={this.columns}
-              onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />
           </div>

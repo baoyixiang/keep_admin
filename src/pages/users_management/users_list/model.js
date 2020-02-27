@@ -55,8 +55,9 @@ const Model = {
       return { ...state, data: action.payload };
     },
     list(state, { payload }) {
+      console.log('payload:', payload);
       const listData = {
-        list: payload.list,
+        list: payload,
         pagination: {
           total: payload.total,
           pageSize: 10,
