@@ -172,6 +172,7 @@ export default {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'analysis',
@@ -194,6 +195,7 @@ export default {
               path: '/form',
               icon: 'form',
               name: 'form',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'basic-form',
@@ -216,6 +218,7 @@ export default {
               path: '/list',
               icon: 'table',
               name: 'list',
+              hideInMenu: true,
               routes: [
                 {
                   path: '/list/search',
@@ -247,6 +250,7 @@ export default {
                   name: 'table-list',
                   path: '/list/table-list',
                   component: './list/table-list',
+                  hideInMenu: true,
                 },
                 {
                   name: 'basic-list',
@@ -264,6 +268,7 @@ export default {
               path: '/profile',
               name: 'profile',
               icon: 'profile',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'basic',
@@ -281,6 +286,7 @@ export default {
               name: 'result',
               icon: 'check-circle-o',
               path: '/result',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'success',
@@ -298,6 +304,7 @@ export default {
               name: 'exception',
               icon: 'warning',
               path: '/exception',
+              hideInMenu: true,
               routes: [
                 {
                   name: '403',
@@ -320,6 +327,7 @@ export default {
               name: 'account',
               icon: 'user',
               path: '/account',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'center',
