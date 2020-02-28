@@ -33,7 +33,7 @@ class RecordList extends Component {
   columns = [
     {
       title: '编号',
-      dataIndex: 'id',
+      dataIndex: 'checkInId',
     },
     {
       title: '用户名',
@@ -41,23 +41,23 @@ class RecordList extends Component {
     },
     {
       title: '评论数',
-      dataIndex: 'createUserId',
+      dataIndex: 'commentCount',
       align: 'center',
     },
     {
       title: '点赞数',
-      dataIndex: 'createUserId',
+      dataIndex: 'likeCount',
     },
     {
       title: '打卡内容',
-      dataIndex: 'tags',
+      // dataIndex: 'tags',
       render(val) {
-        return <div>aaa</div>;
+        return <div>打卡打卡</div>;
       },
     },
     {
       title: '打卡时间',
-      dataIndex: 'createTime',
+      dataIndex: 'checkInTime',
       align: 'center',
       // sorter: true,
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
@@ -78,8 +78,7 @@ class RecordList extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const params = {
-      pageNo: this.state.currentPage,
-      pageSize: 10,
+      customId: 2,
     };
     dispatch({
       type: 'recordList/fetch',

@@ -1,4 +1,4 @@
-import { addHabit, removeRule, updateRule, queryHabitList } from './service';
+import { addHabit, removeRule, updateRule, queryCheckinList } from './service';
 import { message } from 'antd';
 import { isResponseSuccess } from '@/utils/axios';
 
@@ -13,7 +13,7 @@ const Model = {
   },
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryHabitList, payload);
+      const response = yield call(queryCheckinList, payload);
       yield put({
         type: 'list',
         payload: response,

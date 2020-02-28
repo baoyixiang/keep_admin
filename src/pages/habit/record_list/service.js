@@ -25,10 +25,8 @@ export async function updateRule(params) {
   });
 }
 
-export async function queryHabitList(params) {
-  return api.post('/api/user/custom/list', params);
-}
-
-export async function addHabit(params) {
-  return api.post('/api/user/custom/insert_custom', params);
+export async function queryCheckinList(params) {
+  console.log(params);
+  console.log('id:', params.customId);
+  return api.get(`api/checkin/checkInList/${params.customId}`, params);
 }
