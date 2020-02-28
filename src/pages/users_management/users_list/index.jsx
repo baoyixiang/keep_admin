@@ -148,37 +148,6 @@ class UsersList extends Component {
     });
   };
 
-  handleFormReset = () => {
-    const { form, dispatch } = this.props;
-    form.resetFields();
-    this.setState({
-      formValues: {},
-    });
-    dispatch({
-      type: 'userTableList/fetch',
-      payload: {},
-    });
-  };
-
-  handleSearch = e => {
-    e.preventDefault();
-    const { dispatch, form } = this.props;
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      const values = {
-        ...fieldsValue,
-        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
-      };
-      this.setState({
-        formValues: values,
-      });
-      dispatch({
-        type: 'userTableList/fetch',
-        payload: values,
-      });
-    });
-  };
-
   handleModalVisible = flag => {
     this.setState({
       modalVisible: !!flag,
@@ -197,60 +166,6 @@ class UsersList extends Component {
     this.handleModalVisible();
   };
 
-  renderSimpleForm() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row
-          gutter={{
-            md: 8,
-            lg: 24,
-            xl: 48,
-          }}
-        >
-          <Col md={8} sm={24}>
-            <FormItem label="关键字">
-              {getFieldDecorator('name')(<Input placeholder="编号/手机号/渠道/昵称" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="状态">
-              {getFieldDecorator('status')(
-                <Select
-                  placeholder="请选择 激活/冻结/未激活/全部"
-                  style={{
-                    width: '100%',
-                  }}
-                >
-                  <Option value="0">激活</Option>
-                  <Option value="1">冻结</Option>
-                  <Option value="2">未激活</Option>
-                  <Option value="3">全部</Option>
-                </Select>,
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button
-                style={{
-                  marginLeft: 8,
-                }}
-                onClick={this.handleFormReset}
-              >
-                重置
-              </Button>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }
-
   render() {
     const {
       usersList: { listData },
@@ -265,7 +180,6 @@ class UsersList extends Component {
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
             <StandardTable
               loading={loading}
               data={listData}
