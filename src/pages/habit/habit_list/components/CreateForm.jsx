@@ -137,7 +137,7 @@ class CreateForm extends Component {
         <FormItem {...formItemLayout} label="习惯分类">
           {form.getFieldDecorator('tags')(
             <Select placeholder="请选择" defaultValue={0} style={{ width: 150 }}>
-              <Option value={0}>无分类</Option>
+              {/*<Option value={0}>无分类</Option>*/}
               <Option value={1}>学习</Option>
               <Option value={2}>运动</Option>
               <Option value={3}>音乐</Option>
