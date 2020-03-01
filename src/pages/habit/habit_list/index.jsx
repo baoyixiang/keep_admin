@@ -15,7 +15,7 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 
-const status = ['无分类', '学习', '运动'];
+const status = ['无分类', '学习', '运动', '音乐'];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ habitList, loading }) => ({
@@ -67,7 +67,11 @@ class HabitList extends Component {
       title: '分类',
       dataIndex: 'tags',
       render(val) {
-        return <div>{status[val[0]]}</div>;
+        if (val == null) {
+          return <div>{status[0]}</div>;
+        } else {
+          return <div>{status[val[0]]}</div>;
+        }
       },
     },
     {
