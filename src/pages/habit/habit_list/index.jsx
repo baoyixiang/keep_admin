@@ -7,6 +7,7 @@ import CreateForm from './components/CreateForm';
 import StandardTable from './components/StandardTable';
 import styles from './style.less';
 import * as routerRedux from 'react-router-redux';
+import router from 'umi/router';
 
 const FormItem = Form.Item;
 
@@ -52,7 +53,7 @@ class HabitList extends Component {
       title: '加入习惯人数',
       dataIndex: 'createUserId',
       align: 'center',
-      render: val => `${val} 万`,
+      render: val => `${val} 人`,
       // mark to display a total number
       needTotal: true,
     },
@@ -60,7 +61,7 @@ class HabitList extends Component {
       title: '今日打卡人数',
       dataIndex: 'createUserId',
       align: 'center',
-      render: val => `${val} 万`,
+      render: val => `${val} 人`,
       needTotal: true,
     },
     {
@@ -70,7 +71,7 @@ class HabitList extends Component {
         if (val == null) {
           return <div>{status[0]}</div>;
         } else {
-          return <div>{status[val[0]]}</div>;
+          return <div>{val[0]}</div>;
         }
       },
     },
@@ -181,7 +182,7 @@ class HabitList extends Component {
       payload: {
         title: fields.title,
         logo: 'http://m.imeitou.com/uploads/allimg/2019111010/siaz3nfqyqs.jpeg',
-        tags: [fields.tags],
+        tags: [status[fields.tags]],
         userId: 0,
       },
     }).then(() => {
@@ -223,12 +224,20 @@ class HabitList extends Component {
   };
 
   handleDetail = record => {
-    this.props.dispatch(
-      routerRedux.push({
-        // pathname: `/habit/record_list/${record.id}`,
-        pathname: `/habit/record_list`,
-      }),
-    );
+    router.push({
+      pathname: `/habit/record_list/`,
+      state: {
+        // state字段可以自定义，如用params等也可以
+        id: record.id,
+        path: `/habit/record_list/`,
+      },
+    });
+    // this.props.dispatch(
+    //   routerRedux.push({
+    //     // pathname: `/habit/record_list/${record.id}`,
+    //     pathname: `/habit/record_list`,
+    //   }),
+    // );
   };
 
   renderSimpleForm() {

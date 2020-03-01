@@ -77,8 +77,9 @@ class RecordList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    console.log('propssssss:', this.props);
     const params = {
-      customId: 2,
+      customId: this.props.location.state.id,
     };
     dispatch({
       type: 'recordList/fetch',

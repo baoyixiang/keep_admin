@@ -37,7 +37,6 @@ class CardList extends Component {
       modalVisible: !!flag,
       hopeDetail: record || {},
     });
-    console.log('hope:', this.state.hopeDetail);
   };
 
   handleDeleteModalVisible = record => {
@@ -53,7 +52,6 @@ class CardList extends Component {
   handleDelete = record => {
     const { dispatch } = this.props;
     const hopeId = record.id;
-    console.log('id:', hopeId);
     dispatch({
       type: 'hopeList/delete',
       payload: { hopeId },
@@ -69,7 +67,6 @@ class CardList extends Component {
   };
 
   handleInfiniteOnLoad = () => {
-    console.log('我在加载。。。');
     const {
       hopeList: { list },
       dispatch,
@@ -157,7 +154,7 @@ class CardList extends Component {
                           avatar={
                             <img alt="未设置" className={styles.cardAvatar} src={item.avatar} />
                           }
-                          title={<a>{item.createUserId}</a>}
+                          title={<a>{item.name}</a>}
                           description={
                             <Paragraph
                               className={styles.item}
@@ -195,9 +192,9 @@ class CardList extends Component {
               <Descriptions.Item label="图片">
                 {this.state.hopeDetail.images === null ? this.state.hopeDetail.images : '无'}
               </Descriptions.Item>
-              <Descriptions.Item label="录音">
-                {this.state.hopeDetail.voice === null ? this.state.hopeDetail.voice : '无'}
-              </Descriptions.Item>
+              {/*<Descriptions.Item label="录音">*/}
+              {/*  {this.state.hopeDetail.voice === null ? this.state.hopeDetail.voice : '无'}*/}
+              {/*</Descriptions.Item>*/}
               <Descriptions.Item label="点赞数">
                 {this.state.hopeDetail.likeCount}
               </Descriptions.Item>
