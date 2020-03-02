@@ -8,8 +8,6 @@ import styles from './style.less';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { Pie } from '@/pages/dashboard/monitor/components/Charts';
 
-const FormItem = Form.Item;
-
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
@@ -28,6 +26,7 @@ class RecordList extends Component {
     formValues: {},
     stepFormValues: {},
     currentPage: 0,
+    title: '',
   };
 
   columns = [
@@ -37,7 +36,7 @@ class RecordList extends Component {
     },
     {
       title: '用户名',
-      dataIndex: 'title',
+      dataIndex: 'userName',
     },
     {
       title: '评论数',
@@ -50,10 +49,8 @@ class RecordList extends Component {
     },
     {
       title: '打卡内容',
-      // dataIndex: 'tags',
-      render(val) {
-        return <div>打卡打卡</div>;
-      },
+      dataIndex: 'wordContent',
+      align: 'center',
     },
     {
       title: '打卡时间',
@@ -68,8 +65,6 @@ class RecordList extends Component {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleDeleteModalVisible(record)}>删除</a>
-          <Divider type="vertical" />
-          <a onClick={() => this.handleDetail(record)}>查看详情</a>
         </Fragment>
       ),
     },
@@ -77,9 +72,13 @@ class RecordList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    console.log('propssssss:', this.props);
+    this.setState({
+      title: this.props.location.state.title,
+    });
     const params = {
       customId: this.props.location.state.id,
+      pageNo: this.state.currentPage,
+      pageSize: 10,
     };
     dispatch({
       type: 'recordList/fetch',
@@ -114,45 +113,10 @@ class RecordList extends Component {
     });
   };
 
-  handleFormReset = () => {
-    const { form, dispatch } = this.props;
-    const params = {
-      pageNo: this.state.currentPage,
-      pageSize: 10,
-    };
-    form.resetFields();
-    dispatch({
-      type: 'recordList/fetch',
-      payload: params,
-    });
-  };
-
   handleModalVisible = flag => {
     this.setState({
       modalVisible: !!flag,
     });
-  };
-
-  handleAdd = fields => {
-    const { dispatch } = this.props;
-    console.log('add:', fields);
-    const params = {
-      pageNo: this.state.currentPage,
-      pageSize: 10,
-    };
-    dispatch({
-      type: 'recordList/add',
-      payload: {
-        title: fields.title,
-        userId: 0,
-      },
-    }).then(() => {
-      dispatch({
-        type: 'recordList/fetch',
-        payload: params,
-      });
-    });
-    this.handleModalVisible();
   };
 
   handleDeleteModalVisible = record => {
@@ -183,14 +147,29 @@ class RecordList extends Component {
     // });
   };
 
-  renderPie() {
+  renderPie(joinCount, checkInToday) {
+    const percent = (checkInToday / joinCount) * 100;
     return (
       <Card
-        title={<FormattedMessage id="今日已打卡比例" defaultMessage="今日已打卡比例" />}
+        title={
+          <FormattedMessage
+            id="今日已打卡比例"
+            defaultMessage={'习惯 ' + this.state.title + ' 今日已打卡比例'}
+          />
+        }
         bordered={false}
         className={styles.pieCard}
       >
-        <Pie animate={false} percent={28} title="AAA" total="28%" height={200} lineWidth={3} />
+        <Pie
+          animate={false}
+          percent={percent}
+          title="AAA"
+          total={percent + '%'}
+          height={200}
+          lineWidth={3}
+        />
+        <div>{'今日打卡人数：' + checkInToday}</div>
+        <div style={{ marginTop: 10 }}>{'加入习惯总人数：' + joinCount}</div>
       </Card>
     );
   }
@@ -200,17 +179,13 @@ class RecordList extends Component {
       recordList: { listData },
       loading,
     } = this.props;
-    console.log('list:', listData);
-    const { modalVisible } = this.state;
-    const parentMethods = {
-      handleAdd: this.handleAdd,
-      handleModalVisible: this.handleModalVisible,
-    };
+    const joinCount = listData.joinCount;
+    const checkInToday = listData.checkInToday;
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.recordList}>
-            <div className={styles.recordListForm}>{this.renderPie()}</div>
+            <div className={styles.recordListForm}>{this.renderPie(joinCount, checkInToday)}</div>
             <StandardTable
               loading={loading}
               data={listData}

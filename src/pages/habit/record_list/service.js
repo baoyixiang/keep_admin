@@ -12,12 +12,6 @@ export async function removeRule(params) {
     data: { ...params, method: 'delete' },
   });
 }
-export async function addRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: { ...params, method: 'post' },
-  });
-}
 export async function updateRule(params) {
   return request('/api/rule', {
     method: 'POST',
@@ -26,7 +20,5 @@ export async function updateRule(params) {
 }
 
 export async function queryCheckinList(params) {
-  console.log(params);
-  console.log('id:', params.customId);
-  return api.get(`api/checkin/checkInList/${params.customId}`, params);
+  return api.post(`api/checkin/checkInList`, params);
 }

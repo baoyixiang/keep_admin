@@ -1,4 +1,4 @@
-import { addHabit, removeRule, updateRule, queryCheckinList } from './service';
+import { removeRule, updateRule, queryCheckinList } from './service';
 import { message } from 'antd';
 import { isResponseSuccess } from '@/utils/axios';
 
@@ -7,9 +7,10 @@ const Model = {
   state: {
     data: {
       list: [],
+      checkInToday: 0,
+      joinCount: 0,
       pagination: {},
     },
-    habitList: {},
   },
   effects: {
     *fetch({ payload }, { call, put }) {
@@ -18,19 +19,6 @@ const Model = {
         type: 'list',
         payload: response,
       });
-    },
-
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(addHabit, payload);
-      if (isResponseSuccess(response)) {
-        message.success('添加成功');
-        yield put({
-          type: 'save',
-          payload: response,
-        });
-      } else {
-        message.error(`添加失败:${response.data.message}`);
-      }
     },
 
     *remove({ payload, callback }, { call, put }) {
@@ -58,7 +46,9 @@ const Model = {
     list(state, { payload }) {
       console.log('payload:', payload);
       const listData = {
-        list: payload.list,
+        list: payload.checkInOutVOS,
+        joinCount: payload.joinCount,
+        checkInToday: payload.checkInToday,
         pagination: {
           total: payload.total,
           pageSize: 10,

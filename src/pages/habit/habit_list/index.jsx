@@ -225,19 +225,14 @@ class HabitList extends Component {
 
   handleDetail = record => {
     router.push({
-      pathname: `/habit/record_list/`,
+      pathname: `/habit/record_list`,
       state: {
         // state字段可以自定义，如用params等也可以
+        title: record.title,
         id: record.id,
-        path: `/habit/record_list/`,
+        path: `/habit/record_list`,
       },
     });
-    // this.props.dispatch(
-    //   routerRedux.push({
-    //     // pathname: `/habit/record_list/${record.id}`,
-    //     pathname: `/habit/record_list`,
-    //   }),
-    // );
   };
 
   renderSimpleForm() {
@@ -257,21 +252,6 @@ class HabitList extends Component {
               {getFieldDecorator('title')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          {/*<Col md={8} sm={24}>*/}
-          {/*  <FormItem label="使用状态">*/}
-          {/*    {getFieldDecorator('status')(*/}
-          {/*      <Select*/}
-          {/*        placeholder="请选择"*/}
-          {/*        style={{*/}
-          {/*          width: '100%',*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        <Option value="0">关闭</Option>*/}
-          {/*        <Option value="1">运行中</Option>*/}
-          {/*      </Select>,*/}
-          {/*    )}*/}
-          {/*  </FormItem>*/}
-          {/*</Col>*/}
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
