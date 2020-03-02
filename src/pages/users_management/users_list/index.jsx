@@ -71,6 +71,7 @@ class UsersList extends Component {
     },
     {
       title: '操作',
+      align: 'center',
       render: record => (
         <Fragment>
           <a onClick={() => this.handleRecommendModal(record)}>

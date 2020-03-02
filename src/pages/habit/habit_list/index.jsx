@@ -51,15 +51,7 @@ class HabitList extends Component {
     },
     {
       title: '加入习惯人数',
-      dataIndex: 'createUserId',
-      align: 'center',
-      render: val => `${val} 人`,
-      // mark to display a total number
-      needTotal: true,
-    },
-    {
-      title: '今日打卡人数',
-      dataIndex: 'createUserId',
+      dataIndex: 'joinCount',
       align: 'center',
       render: val => `${val} 人`,
       needTotal: true,

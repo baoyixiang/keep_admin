@@ -51,12 +51,12 @@ class RecordList extends Component {
       title: '打卡内容',
       dataIndex: 'wordContent',
       align: 'center',
+      render: val => <span>{val === null ? '——无——' : val}</span>,
     },
     {
       title: '打卡时间',
       dataIndex: 'checkInTime',
       align: 'center',
-      // sorter: true,
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
@@ -162,9 +162,9 @@ class RecordList extends Component {
       >
         <Pie
           animate={false}
-          percent={percent}
+          percent={percent.toFixed(2)}
           title="AAA"
-          total={percent + '%'}
+          total={percent.toFixed(2) + '%'}
           height={200}
           lineWidth={3}
         />
