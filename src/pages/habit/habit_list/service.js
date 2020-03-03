@@ -9,6 +9,5 @@ export async function addHabit(params) {
 }
 
 export async function deleteHabit(params) {
-  console.log('params', params);
   return api.delete(`/backApi/custom/delete/${params}`);
 }

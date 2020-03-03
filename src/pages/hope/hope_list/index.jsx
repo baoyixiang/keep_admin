@@ -101,6 +101,12 @@ class CardList extends Component {
       hopeList: { list },
       loading,
     } = this.props;
+    let oldUrl =
+      'cloud://forever-hope-bstqt.666f-forever-hope-bstqt-1300943694/habitIcon/1583217187000.jpg';
+    let url = 'https://666f-forever-hope-bstqt-1300943694.tcb.qcloud.la';
+    const image = this.state.hopeDetail?.images ?? null;
+    console.log('image:', image);
+    console.log('isArray:', Array.isArray(image));
     return (
       <PageHeaderWrapper>
         <div className={styles.cardList}>
@@ -190,7 +196,11 @@ class CardList extends Component {
                 {this.state.hopeDetail.wordContent}
               </Descriptions.Item>
               <Descriptions.Item label="图片">
-                {this.state.hopeDetail.images === null ? this.state.hopeDetail.images : '无'}
+                <img
+                  src={Array.isArray(image) ? url + image[0].split('1300943694')[1] : null}
+                  width="150px"
+                  alt={'无图片'}
+                />
               </Descriptions.Item>
               {/*<Descriptions.Item label="录音">*/}
               {/*  {this.state.hopeDetail.voice === null ? this.state.hopeDetail.voice : '无'}*/}

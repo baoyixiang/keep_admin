@@ -36,12 +36,6 @@ class UsersList extends Component {
       render: val => `${val.user.name}`,
     },
     {
-      title: '个性签名',
-      align: 'center',
-      render: val => `${val.user.personalSignature}`,
-      maxLength: 10,
-    },
-    {
       title: '加入习惯数',
       dataIndex: 'customesCount',
       align: 'center',

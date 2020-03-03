@@ -22,3 +22,7 @@ export async function updateRule(params) {
 export async function queryCheckinList(params) {
   return api.post(`api/checkin/checkInList`, params);
 }
+
+export async function deleteCheckin(params) {
+  return api.delete(`/api/checkin/deleteCheckIn/${params}`);
+}

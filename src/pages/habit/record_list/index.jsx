@@ -62,11 +62,14 @@ class RecordList extends Component {
     {
       title: '操作',
       align: 'center',
-      render: (text, record) => (
-        <Fragment>
-          <a onClick={() => this.handleDeleteModalVisible(record)}>删除</a>
-        </Fragment>
-      ),
+      render: (text, record) =>
+        record.wordContent === null ? (
+          <div>无法操作</div>
+        ) : (
+          <Fragment>
+            <a onClick={() => this.handleDeleteModalVisible(record)}>删除</a>
+          </Fragment>
+        ),
     },
   ];
 
@@ -113,12 +116,6 @@ class RecordList extends Component {
     });
   };
 
-  handleModalVisible = flag => {
-    this.setState({
-      modalVisible: !!flag,
-    });
-  };
-
   handleDeleteModalVisible = record => {
     Modal.confirm({
       title: '操作',
@@ -131,24 +128,26 @@ class RecordList extends Component {
 
   handleDelete = record => {
     const { dispatch } = this.props;
-    const habitId = record.id;
-    console.log('id:', habitId);
-    // dispatch({
-    //   type: 'hopeList/delete',
-    //   payload: { hopeId },
-    // }).then(() => {
-    //   dispatch({
-    //     type: 'hopeList/fetch',
-    //     payload: {
-    //       pageNo: 0,
-    //       pageSize: this.state.pageSize,
-    //     },
-    //   });
-    // });
+    const checkInId = record.checkInId;
+    console.log('id:', checkInId);
+    const params = {
+      customId: this.props.location.state.id,
+      pageNo: this.state.currentPage,
+      pageSize: 10,
+    };
+    dispatch({
+      type: 'recordList/delete',
+      payload: checkInId,
+    }).then(() => {
+      dispatch({
+        type: 'recordList/fetch',
+        payload: params,
+      });
+    });
   };
 
   renderPie(joinCount, checkInToday) {
-    const percent = (checkInToday / joinCount) * 100;
+    const percent = joinCount === 0 ? 0 : (checkInToday / joinCount) * 100;
     return (
       <Card
         title={
@@ -163,7 +162,7 @@ class RecordList extends Component {
         <Pie
           animate={false}
           percent={percent.toFixed(2)}
-          title="AAA"
+          title="今日已打卡比例"
           total={percent.toFixed(2) + '%'}
           height={200}
           lineWidth={3}
@@ -179,8 +178,8 @@ class RecordList extends Component {
       recordList: { listData },
       loading,
     } = this.props;
-    const joinCount = listData.joinCount;
-    const checkInToday = listData.checkInToday;
+    const joinCount = listData?.joinCount ?? 0;
+    const checkInToday = listData?.checkInToday ?? 0;
     return (
       <PageHeaderWrapper>
         <Card bordered={false}>

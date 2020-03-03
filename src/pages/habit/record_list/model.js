@@ -1,4 +1,4 @@
-import { removeRule, updateRule, queryCheckinList } from './service';
+import { deleteCheckin, updateRule, queryCheckinList } from './service';
 import { message } from 'antd';
 import { isResponseSuccess } from '@/utils/axios';
 
@@ -21,13 +21,17 @@ const Model = {
       });
     },
 
-    *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-      if (callback) callback();
+    *delete({ payload, callback }, { call, put }) {
+      const response = yield call(deleteCheckin, payload);
+      if (isResponseSuccess(response)) {
+        message.success('删除成功');
+        yield put({
+          type: 'save',
+          payload: response,
+        });
+      } else {
+        message.error(`删除失败:${response.data.message}`);
+      }
     },
 
     *update({ payload, callback }, { call, put }) {

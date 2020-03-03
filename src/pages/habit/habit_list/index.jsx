@@ -33,6 +33,9 @@ class HabitList extends Component {
     currentPage: 0,
   };
 
+  // let oldUrl='cloud://forever-hope-bstqt.666f-forever-hope-bstqt-1300943694/habitIcon/1583217187000.jpg';
+  // let url='https://666f-forever-hope-bstqt-1300943694.tcb.qcloud.la'+oldUrl.split('1300943694')[1];
+
   columns = [
     {
       title: '编号',
@@ -44,10 +47,21 @@ class HabitList extends Component {
     },
     {
       title: '习惯图片',
-      dataIndex: 'logo',
       width: '100px',
       align: 'center',
-      render: val => <img src={val ? val.split('|')[0] : null} width="80px" alt={'无'} />,
+      render: val =>
+        val.tags === null ? (
+          <img
+            src={
+              'https://666f-forever-hope-bstqt-1300943694.tcb.qcloud.la' +
+              val.logo.split('1300943694')[1]
+            }
+            width="80px"
+            alt={'无'}
+          />
+        ) : (
+          <img src={val.logo.split('|')[0]} width="80px" alt={'无'} />
+        ),
     },
     {
       title: '加入习惯人数',
