@@ -101,16 +101,6 @@ export default {
               component: './user/login',
             },
             {
-              name: 'register-result',
-              path: '/user/register-result',
-              component: './user/register-result',
-            },
-            {
-              name: 'register',
-              path: '/user/register',
-              component: './user/register',
-            },
-            {
               component: '404',
             },
           ],
@@ -169,138 +159,6 @@ export default {
               ],
             },
             {
-              path: '/dashboard',
-              name: 'dashboard',
-              icon: 'dashboard',
-              hideInMenu: true,
-              routes: [
-                {
-                  name: 'analysis',
-                  path: '/dashboard/analysis',
-                  component: './dashboard/analysis',
-                },
-                {
-                  name: 'monitor',
-                  path: '/dashboard/monitor',
-                  component: './dashboard/monitor',
-                },
-                {
-                  name: 'workplace',
-                  path: '/dashboard/workplace',
-                  component: './dashboard/workplace',
-                },
-              ],
-            },
-            {
-              path: '/form',
-              icon: 'form',
-              name: 'form',
-              hideInMenu: true,
-              routes: [
-                {
-                  name: 'basic-form',
-                  path: '/form/basic-form',
-                  component: './form/basic-form',
-                },
-                {
-                  name: 'step-form',
-                  path: '/form/step-form',
-                  component: './form/step-form',
-                },
-                {
-                  name: 'advanced-form',
-                  path: '/form/advanced-form',
-                  component: './form/advanced-form',
-                },
-              ],
-            },
-            {
-              path: '/list',
-              icon: 'table',
-              name: 'list',
-              hideInMenu: true,
-              routes: [
-                {
-                  path: '/list/search',
-                  name: 'search-list',
-                  component: './list/search',
-                  routes: [
-                    {
-                      path: '/list/search',
-                      redirect: '/list/search/articles',
-                    },
-                    {
-                      name: 'articles',
-                      path: '/list/search/articles',
-                      component: './list/search/articles',
-                    },
-                    {
-                      name: 'projects',
-                      path: '/list/search/projects',
-                      component: './list/search/projects',
-                    },
-                    {
-                      name: 'applications',
-                      path: '/list/search/applications',
-                      component: './list/search/applications',
-                    },
-                  ],
-                },
-                {
-                  name: 'table-list',
-                  path: '/list/table-list',
-                  component: './list/table-list',
-                  hideInMenu: true,
-                },
-                {
-                  name: 'basic-list',
-                  path: '/list/basic-list',
-                  component: './list/basic-list',
-                },
-                {
-                  name: 'card-list',
-                  path: '/list/card-list',
-                  component: './list/card-list',
-                },
-              ],
-            },
-            {
-              path: '/profile',
-              name: 'profile',
-              icon: 'profile',
-              hideInMenu: true,
-              routes: [
-                {
-                  name: 'basic',
-                  path: '/profile/basic',
-                  component: './profile/basic',
-                },
-                {
-                  name: 'advanced',
-                  path: '/profile/advanced',
-                  component: './profile/advanced',
-                },
-              ],
-            },
-            {
-              name: 'result',
-              icon: 'check-circle-o',
-              path: '/result',
-              hideInMenu: true,
-              routes: [
-                {
-                  name: 'success',
-                  path: '/result/success',
-                  component: './result/success',
-                },
-                {
-                  name: 'fail',
-                  path: '/result/fail',
-                  component: './result/fail',
-                },
-              ],
-            },
-            {
               name: 'exception',
               icon: 'warning',
               path: '/exception',
@@ -320,24 +178,6 @@ export default {
                   name: '500',
                   path: '/exception/500',
                   component: './exception/500',
-                },
-              ],
-            },
-            {
-              name: 'account',
-              icon: 'user',
-              path: '/account',
-              hideInMenu: true,
-              routes: [
-                {
-                  name: 'center',
-                  path: '/account/center',
-                  component: './account/center',
-                },
-                {
-                  name: 'settings',
-                  path: '/account/settings',
-                  component: './account/settings',
                 },
               ],
             },

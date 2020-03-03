@@ -33,12 +33,12 @@ function autoHeight() {
         computedHeight: 0,
       };
 
-      root = undefined;
+      root = null;
 
       componentDidMount() {
         const { height } = this.props;
 
-        if (!height) {
+        if (!height && this.root) {
           let h = getAutoHeight(this.root);
           this.setState({
             computedHeight: h,

@@ -14,11 +14,11 @@ class Pie extends Component {
     legendBlock: false,
   };
 
-  requestRef = undefined;
+  chart = undefined;
 
   root = undefined;
 
-  chart = undefined; // for window resize auto responsive legend
+  requestRef = 0; // for window resize auto responsive legend
 
   resize = Debounce(() => {
     const { hasLegend } = this.props;
@@ -40,7 +40,7 @@ class Pie extends Component {
         legendBlock: false,
       });
     }
-  }, 400);
+  }, 300);
 
   componentDidMount() {
     window.addEventListener(
@@ -88,7 +88,8 @@ class Pie extends Component {
     if (!this.chart) return;
     const geom = this.chart.getAllGeoms()[0]; // 获取所有的图形
 
-    if (!geom) return;
+    if (!geom) return; // g2 的类型有问题
+
     const items = geom.get('dataArray') || []; // 获取图形对应的
 
     const legendData = items.map(item => {

@@ -7,6 +7,7 @@ import StandardTable from './components/StandardTable';
 import styles from './style.less';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import { Pie } from '@/pages/dashboard/monitor/components/Charts';
+// import { Pie } from '@/pages/habit/record_list/components/Pie';
 
 const getValue = obj =>
   Object.keys(obj)
