@@ -36,8 +36,6 @@ class StandardTable extends Component {
     const { list = [], pagination = false } = data || {};
     const paginationProps = pagination
       ? {
-          showSizeChanger: true,
-          showQuickJumper: true,
           ...pagination,
         }
       : false;

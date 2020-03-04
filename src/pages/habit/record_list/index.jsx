@@ -26,7 +26,7 @@ class RecordList extends Component {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
-    currentPage: 0,
+    currentPage: 1,
     title: '',
   };
 

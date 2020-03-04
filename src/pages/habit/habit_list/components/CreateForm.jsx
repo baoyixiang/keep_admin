@@ -68,6 +68,13 @@ class CreateForm extends Component {
     }
   };
 
+  handleModalVisible = () => {
+    const { handleModalVisible, modalVisible } = this.props;
+    if (handleModalVisible) {
+      handleModalVisible(!modalVisible);
+    }
+  };
+
   render() {
     const formItemLayout = {
       labelCol: {
@@ -78,7 +85,7 @@ class CreateForm extends Component {
       },
     };
     const { imageUrl, fileList } = this.state;
-    const { modalVisible, form, handleModalVisible } = this.props;
+    const { modalVisible, form } = this.props;
     const uploadButton = (
       <div>
         <Icon type={this.state.loading ? 'loading' : 'plus'} />
@@ -91,7 +98,7 @@ class CreateForm extends Component {
         title="新建习惯"
         visible={modalVisible}
         onOk={this.okHandle}
-        onCancel={handleModalVisible}
+        onCancel={this.handleModalVisible}
       >
         <FormItem {...formItemLayout} label="习惯名称">
           {form.getFieldDecorator('title', {
@@ -114,7 +121,6 @@ class CreateForm extends Component {
             ],
           })(
             <Upload
-              // action={picUploadUrl}
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture-card"
               showUploadList={false}

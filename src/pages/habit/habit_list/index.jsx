@@ -30,11 +30,8 @@ class HabitList extends Component {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
-    currentPage: 0,
+    currentPage: 1,
   };
-
-  // let oldUrl='cloud://forever-hope-bstqt.666f-forever-hope-bstqt-1300943694/habitIcon/1583217187000.jpg';
-  // let url='https://666f-forever-hope-bstqt-1300943694.tcb.qcloud.la'+oldUrl.split('1300943694')[1];
 
   columns = [
     {
@@ -125,7 +122,6 @@ class HabitList extends Component {
       pageSize: pagination.pageSize,
       ...filters,
     };
-
     this.setState({
       currentPage: pagination.current, //pagination.current从1开始计数 后端页码从0开始
     });
@@ -178,7 +174,6 @@ class HabitList extends Component {
 
   handleAdd = fields => {
     const { dispatch } = this.props;
-    console.log('add:', fields);
     const params = {
       pageNo: this.state.currentPage,
       pageSize: 10,
@@ -187,7 +182,8 @@ class HabitList extends Component {
       type: 'habitList/add',
       payload: {
         title: fields.title,
-        logo: 'http://m.imeitou.com/uploads/allimg/2019111010/siaz3nfqyqs.jpeg',
+        logo:
+          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583311946038&di=2069318d6204c1c84dcd2dbd38f51d8f&imgtype=0&src=http%3A%2F%2Fimg01.yitubao.com%2F180204%2F821-1P20422513476.jpg',
         tags: [status[fields.tags]],
         userId: 0,
       },

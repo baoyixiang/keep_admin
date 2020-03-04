@@ -27,6 +27,7 @@ class UsersList extends Component {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
+    currentPage: 1,
   };
 
   columns = [
@@ -79,7 +80,7 @@ class UsersList extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const params = {
-      pageNo: 0,
+      pageNo: this.state.currentPage,
       pageSize: 10,
     };
     dispatch({
@@ -104,7 +105,7 @@ class UsersList extends Component {
     console.log('id:', userId);
 
     const params = {
-      pageNo: 0,
+      pageNo: this.state.currentPage,
       pageSize: 10,
     };
     dispatch({
@@ -127,9 +128,8 @@ class UsersList extends Component {
       return newObj;
     }, {});
     const params = {
-      currentPage: pagination.current,
+      pageNo: pagination.current,
       pageSize: pagination.pageSize,
-      ...formValues,
       ...filters,
     };
 
