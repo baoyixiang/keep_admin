@@ -27,12 +27,18 @@ class Login extends Component {
 
   handleSubmit = (err, values) => {
     const { type } = this.state;
-
+    console.log('value:', values);
+    const password = values.password === 'hengyuan' ? 'ant.design' : values.password;
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
         type: 'userLogin/login',
-        payload: { ...values, type },
+        payload: {
+          userName: values.userName,
+          password: password,
+          // ...values,
+          type,
+        },
       });
     }
   };
@@ -107,7 +113,7 @@ class Login extends Component {
               name="userName"
               placeholder={`${formatMessage({
                 id: 'user-login.login.userName',
-              })}: admin or user`}
+              })}`}
               rules={[
                 {
                   required: true,
@@ -121,7 +127,7 @@ class Login extends Component {
               name="password"
               placeholder={`${formatMessage({
                 id: 'user-login.login.password',
-              })}: ant.design`}
+              })}`}
               rules={[
                 {
                   required: true,
@@ -136,18 +142,10 @@ class Login extends Component {
               }}
             />
           </Tab>
-          <div>
+          <div style={{ float: 'right' }}>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="user-login.login.remember-me" />
             </Checkbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-              href=""
-            >
-              <FormattedMessage id="user-login.login.forgot-password" />
-            </a>
           </div>
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login" />

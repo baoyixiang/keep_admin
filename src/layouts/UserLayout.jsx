@@ -4,7 +4,7 @@ import Link from 'umi/link';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
-import logo from '../assets/logo.svg';
+import logo from '../assets/head.png';
 import styles from './UserLayout.less';
 
 const UserLayout = props => {
@@ -34,15 +34,12 @@ const UserLayout = props => {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
-                <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>恒愿管理平台</span>
-              </Link>
+              <img alt="logo" className={styles.logo} src={logo} />
+              <span className={styles.title}>恒愿管理平台</span>
             </div>
           </div>
           {children}
         </div>
-        <DefaultFooter />
       </div>
     </DocumentTitle>
   );

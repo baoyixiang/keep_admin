@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import logo from '../assets/logo.svg';
+import logo from '../assets/head.png';
 import hope from '../assets/hope.png';
 /**
  * use Authorized check all menu item
@@ -77,7 +77,6 @@ const BasicLayout = props => {
           if (menuItemProps.isUrl) {
             return defaultDom;
           }
-
           return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         }}
         breadcrumbRender={(routers = []) => [
