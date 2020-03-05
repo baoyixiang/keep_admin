@@ -182,8 +182,7 @@ class HabitList extends Component {
       type: 'habitList/add',
       payload: {
         title: fields.title,
-        logo:
-          'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583311946038&di=2069318d6204c1c84dcd2dbd38f51d8f&imgtype=0&src=http%3A%2F%2Fimg01.yitubao.com%2F180204%2F821-1P20422513476.jpg',
+        logo: 'http://img1.imgtn.bdimg.com/it/u=3932645816,4063035891&fm=26&gp=0.jpg',
         tags: [status[fields.tags]],
         userId: 0,
       },
